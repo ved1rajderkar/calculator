@@ -1,14 +1,20 @@
 import tkinter as tk
+import ast
 
 # Function to update input field
 def press(key):
+    if entry_var.get() and entry_var.get()[-1] in "+-*/" and key in "+-*/":
+        return  
     entry_var.set(entry_var.get() + str(key))
 
 # Function to evaluate the expression
 def calculate():
     try:
-        result = eval(entry_var.get())  # Evaluate the expression
+        expression = entry_var.get()
+        result = ast.literal_eval(expression)
         entry_var.set(result)
+    except (SyntaxError, ValueError):
+        entry_var.set("Error")  
     except Exception:
         entry_var.set("Error")
 
