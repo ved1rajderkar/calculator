@@ -1,16 +1,26 @@
 import tkinter as tk
+import re
 
 # Function to update input field
 def press(key):
     entry_var.set(entry_var.get() + str(key))
 
+# Custom parser to evaluate mathematical expressions safely
+def safe_evaluate(expression):
+    # Regular expression to match valid mathematical expressions
+    if not re.match(r'^[\d\s\+\-\*\/\(\)\.]+$', expression):
+        return "Error: Invalid characters"
+    
+    try:
+        # Use a safer evaluation method or custom parser
+        return str(eval(expression, {"__builtins__": None}, {"math": None}))
+    except Exception as e:
+        return f"Error: {str(e)}"
+
 # Function to evaluate the expression
 def calculate():
-    try:
-        result = eval(entry_var.get())  # Evaluate the expression
-        entry_var.set(result)
-    except Exception:
-        entry_var.set("Error")
+    result = safe_evaluate(entry_var.get())
+    entry_var.set(result)
 
 # Function to clear the input field
 def clear():
