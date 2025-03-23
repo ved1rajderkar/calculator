@@ -3,17 +3,21 @@ import re
 
 # Function to update input field
 def press(key):
-    entry_var.set(entry_var.get() + str(key))
+    current_input = entry_var.get()
+    # Prevent consecutive operators
+    if key in {'+', '-', '*', '/'} and current_input and current_input[-1] in {'+', '-', '*', '/'}:
+        return
+    entry_var.set(current_input + str(key))
 
-# Custom parser to evaluate mathematical expressions safely
+# Custom function to safely evaluate mathematical expressions
 def safe_evaluate(expression):
-    # Regular expression to match valid mathematical expressions
+    # Regular expression to validate the input
     if not re.match(r'^[\d\s\+\-\*\/\(\)\.]+$', expression):
         return "Error: Invalid characters"
     
     try:
-        # Use a safer evaluation method or custom parser
-        return str(eval(expression, {"__builtins__": None}, {"math": None}))
+        # Use a safer evaluation method
+        return str(eval(expression, {"__builtins__": None}, {}))
     except Exception as e:
         return f"Error: {str(e)}"
 
